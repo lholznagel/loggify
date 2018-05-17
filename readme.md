@@ -2,6 +2,17 @@
 
 A small and simple log implementation that I use in my rust projects.
 
+## Install
+
+Just add
+
+``` toml
+[dependencies]
+loggify = "1.0.0"
+```
+
+to your `Cargo.toml`
+
 ## Usage
 
 The simpliest way is just to call `init`.
