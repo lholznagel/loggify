@@ -2,7 +2,7 @@
 authors = ["lholznagel <contact@lholznagel.info>"]
 description = "Small and simple rust logger"
 documentation = "https://github.com/lholznagel/loggify"
-hompage = "https://github.com/lholznagel/loggify"
+homepage = "https://github.com/lholznagel/loggify"
 license = "MIT"
 name = "loggify"
 readme = "readme.md"
