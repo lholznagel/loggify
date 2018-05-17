@@ -1,7 +1,23 @@
 [package]
-name = "loggify"
-version = "0.1.0"
 authors = ["lholznagel <contact@lholznagel.info>"]
+description = "Small and simple rust logger"
+documentation = "https://github.com/lholznagel/loggify"
+hompage = "https://github.com/lholznagel/loggify"
+license = "MIT"
+name = "loggify"
+readme = "readme.md"
+repository = "https://github.com/lholznagel/loggify"
+version = "1.0.0"
+
+exclude = [
+  "assets/*",
+  "examples/*",
+  ".editorconfig",
+  ".gitignore",
+  ".travis.yml",
+  "Makefile",
+  "readme.md"
+]
 
 [dependencies]
 log = { version = "0.4.1", features = ["std"] }

@@ -84,4 +84,4 @@ For help you can take a look in the examples folder.
 
 ## Example output
 
-[![terminal](./assets/terminal.png)]()
+[![terminal](./assets/terminal.png)](./assets/terminal.png)
