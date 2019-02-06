@@ -1,6 +1,7 @@
+use crate::Loggify;
+
 use log;
 use log::{Level, SetLoggerError};
-use loggify::Loggify;
 
 /// Struct for building a new logger
 pub struct LogBuilder {

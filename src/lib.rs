@@ -10,9 +10,6 @@
 )]
 
 //! Small and simple log implementation
-extern crate log;
-extern crate time;
-
 mod loggify;
 mod log_builder;
 

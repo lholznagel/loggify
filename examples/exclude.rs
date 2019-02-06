@@ -1,10 +1,9 @@
-#[macro_use]
-extern crate log;
-extern crate loggify;
-
+use log::{error, warn, info, debug, trace};
 use loggify::LogBuilder;
 
-mod exclude_example;
+mod exclude_example {
+    pub mod example;
+}
 
 fn main() {
     LogBuilder::new()

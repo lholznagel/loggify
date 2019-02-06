@@ -1,7 +1,4 @@
-#[macro_use]
-extern crate log;
-extern crate loggify;
-
+use log::{error, warn, info, debug, trace};
 use loggify::Loggify;
 
 fn main() {

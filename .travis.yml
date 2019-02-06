@@ -1,9 +1,12 @@
-sudo: false
-
 language: rust
 
 notifications:
   email: false
+
+os:
+  - windows
+  - linux
+  - osx
 
 rust:
   - stable

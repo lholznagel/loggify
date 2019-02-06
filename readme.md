@@ -8,6 +8,7 @@ Just add
 
 ``` toml
 [dependencies]
+log = "0.4.6"
 loggify = "1.0.0"
 ```
 
@@ -19,10 +20,7 @@ The simpliest way is just to call `init`.
 The default log level is `Info`, so that debug and trace messages are not shown.
 
 ``` rust
-#[macro_use]
-extern crate log;
-extern crate loggify;
-
+use log::{error, warn, info, debug, trace};
 use loggify::Loggify;
 
 fn main() {

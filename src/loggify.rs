@@ -1,4 +1,5 @@
-use log_builder::LogBuilder;
+use crate::LogBuilder;
+
 use log::{Log, Level, Metadata, Record, SetLoggerError};
 use time;
 
