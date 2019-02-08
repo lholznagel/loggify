@@ -1,14 +1,17 @@
 use crate::LogBuilder;
 
+use chrono::Utc;
 use log::{Log, Level, Metadata, Record, SetLoggerError};
-use time;
 
 /// Logger
 pub struct Loggify {
+    /// all targets added are excluded from the logger
+    pub exclude: Vec<String>,
     /// defines the minimum log level
     pub level: Level,
-    /// all targets added are excluded from the logger
-    pub exclude: Vec<String>
+    /// sets the time format
+    /// see https://docs.rs/chrono/0.4.6/chrono/format/strftime/index.html for supported escape sequences
+    pub time_format: String
 }
 
 impl Loggify {
@@ -85,16 +88,16 @@ impl Log for Loggify {
 
         let mut level_msg = String::new();
         match record.level() {
-            Level::Error => level_msg.push_str("\x1B[0;31mError"),
-            Level::Warn  => level_msg.push_str("\x1B[0;93mWarn "),
-            Level::Info  => level_msg.push_str("\x1B[0;34mInfo "),
-            Level::Debug => level_msg.push_str("\x1B[0;35mDebug"),
-            Level::Trace => level_msg.push_str("\x1B[0;36mTrace")
+            Level::Error => level_msg.push_str("\x1B[0;31mError \x1B"),
+            Level::Warn  => level_msg.push_str("\x1B[0;93mWarn  \x1B"),
+            Level::Info  => level_msg.push_str("\x1B[0;34mInfo  \x1B"),
+            Level::Debug => level_msg.push_str("\x1B[0;35mDebug \x1B"),
+            Level::Trace => level_msg.push_str("\x1B[0;36mTrace \x1B")
         };
 
         println!(
-            "\x1B[1;30m[{}] > \x1B {} \x1B[1;30m>\x1B[0m {}", 
-            time::strftime("%d.%m.%Y %H:%M:%S", &time::now()).unwrap(), 
+            "\x1B[1;30m[{}] > \x1B {}[1;30m>\x1B[0m {}", 
+            Utc::now().format(&self.time_format), 
             level_msg, 
             record.args());
     }
