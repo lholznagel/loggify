@@ -3,15 +3,19 @@ use crate::LogBuilder;
 use chrono::Utc;
 use log::{Log, Level, Metadata, Record, SetLoggerError};
 
-/// Logger
+/// The logger instance
+/// To configure the logger, use the `LogBuilder` struct
 pub struct Loggify {
     /// all targets added are excluded from the logger
-    pub exclude: Vec<String>,
+    pub(crate) exclude: Vec<String>,
     /// defines the minimum log level
-    pub level: Level,
+    pub(crate) level: Level,
     /// sets the time format
-    /// see https://docs.rs/chrono/0.4.6/chrono/format/strftime/index.html for supported escape sequences
-    pub time_format: String
+    /// see https://docs.rs/chrono/latest/chrono/format/strftime/index.html for supported escape sequences
+    pub(crate) time_format: String,
+    /// defines if the target should be logged or not
+    /// this option should be used as a debug option
+    pub(crate) log_target: bool
 }
 
 impl Loggify {
@@ -71,6 +75,10 @@ impl Loggify {
 impl Log for Loggify {
     fn enabled(&self, metadata: &Metadata) -> bool {
         let mut result = true;
+
+        if self.log_target {
+            dbg!(metadata.target());
+        }
 
         for value in self.exclude.clone() {
             if metadata.target().contains(&value) {

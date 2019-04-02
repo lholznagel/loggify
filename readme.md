@@ -1,4 +1,4 @@
-# Loggify
+# loggify
 
 A small and simple log implementation that I use in my rust projects.
 
@@ -16,13 +16,20 @@ to your `Cargo.toml`
 
 ## Usage
 
+All examples can be found in the `examples` directory.
+
+### Basic
+
 The simpliest way is just to call `init`.
 The default log level is `Info`, so that debug and trace messages are not shown.
 
 ``` rust
+//! examples/01_basic.rs
+//! # Basic usage for the logger
 use log::{error, warn, info, debug, trace};
 use loggify::Loggify;
 
+/// The default level is INFO. So debug and trace outputs are oppressed
 fn main() {
     Loggify::init().unwrap();
 
@@ -34,17 +41,43 @@ fn main() {
 }
 ```
 
-If you want to set the log level you an use `init_with_level`.
+### With log level
 
 ``` rust
-#[macro_use]
-extern crate log;
-extern crate loggify;
-
+//! examples/02_log_level.rs
+//! Example for initializing the logger with a log level
+use log::{error, warn, info, debug, trace, Level};
 use loggify::Loggify;
 
+/// Same as the basic example with the difference that
+/// the logger is intialized with the debug log level.
 fn main() {
-    Loggify::init_with_level(log::Level::Trace).unwrap();
+    Loggify::init_with_level(Level::Debug).unwrap();
+
+    error!("My error message");
+    warn!("My warn message");
+    info!("My info message");
+    debug!("My debug message");
+    trace!("Will not be shown");
+}
+```
+
+### Log builder
+``` rust
+//! examples/03_builder.rs
+//! Example for initializing the logger with the LogBuilder
+use log::{error, warn, info, debug, trace};
+use loggify::LogBuilder;
+
+/// The `LogBuilder` is used to set more logger options
+/// This example will change the log level to Trace
+/// and the printed time format to time only
+fn main() {
+    LogBuilder::new()
+        .set_level(log::Level::Trace)
+        .set_time_format(String::from("%H:%M:%S"))
+        .build()
+        .unwrap();
 
     error!("My error message");
     warn!("My warn message");
@@ -54,22 +87,40 @@ fn main() {
 }
 ```
 
-## Exclude targets from log
-
-Sometimes you want to exclude some targets from the log.
+### Exclude targets from log
 
 ``` rust
-#[macro_use]
-extern crate log;
-extern crate loggify;
-
+//! examples/04_exclude.rs
+//! Example for excluding log targets from getting logged
+use log::{error, warn, info, debug, trace};
 use loggify::LogBuilder;
 
-mod exclude_example;
+mod example {
+    pub mod excluded {
+        use log::info;
 
+        pub fn call_me() {
+            info!("I will not be logged");
+        }
+    }
+
+    pub mod included {
+        use log::info;
+
+        pub fn call_me() {
+            info!("I will be logged");
+        }
+    }
+}
+
+/// Exmple on how to exclude specific log targets
 fn main() {
     LogBuilder::new()
-        .add_exclude("exclude::exclude_example".to_string())
+        // this will show the log targets so that we can determine
+        // what to exclude
+        .set_log_target(true)
+        // this will oppress all logs coming from example::excluded::*
+        .add_exclude("example::excluded".to_string())
         .set_level(log::Level::Trace)
         .build()
         .unwrap();
@@ -80,16 +131,12 @@ fn main() {
     debug!("My debug message");
     trace!("My trace message");
 
-    exclude_example::example::call_me();
+    // the log message of this call will not be shown
+    example::excluded::call_me();
+    // this log message will be shown
+    example::included::call_me();
 }
 ```
-
-For this we need to use the `LogBuilder`.
-With this all logs that come from a target that contains `exclude::exclude_example` is not shown.
-
-## Examples
-
-For help you can take a look in the examples folder.
 
 ## Example output
 

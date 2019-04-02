@@ -1,6 +1,8 @@
+//! # Basic usage for the logger
 use log::{error, warn, info, debug, trace};
 use loggify::Loggify;
 
+/// The default level is INFO. So debug and trace outputs are oppressed
 fn main() {
     Loggify::init().unwrap();
 
