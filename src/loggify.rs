@@ -94,19 +94,18 @@ impl Log for Loggify {
            return;
         }
 
-        let mut level_msg = String::new();
-        match record.level() {
-            Level::Error => level_msg.push_str("\x1B[0;31mError \x1B"),
-            Level::Warn  => level_msg.push_str("\x1B[0;93mWarn  \x1B"),
-            Level::Info  => level_msg.push_str("\x1B[0;34mInfo  \x1B"),
-            Level::Debug => level_msg.push_str("\x1B[0;35mDebug \x1B"),
-            Level::Trace => level_msg.push_str("\x1B[0;36mTrace \x1B")
+        let level_msg: &str = match record.level() {
+            Level::Error => "\x1B[0;31mError \x1B",
+            Level::Warn  => "\x1B[0;93mWarn  \x1B",
+            Level::Info  => "\x1B[0;34mInfo  \x1B",
+            Level::Debug => "\x1B[0;35mDebug \x1B",
+            Level::Trace => "\x1B[0;36mTrace \x1B",
         };
 
         println!(
-            "\x1B[1;30m[{}] > \x1B {}[1;30m>\x1B[0m {}", 
-            Utc::now().format(&self.time_format), 
-            level_msg, 
+            "\x1B[1;30m[{}] > \x1B {}[1;30m>\x1B[0m {}",
+            Utc::now().format(&self.time_format),
+            level_msg,
             record.args());
     }
 

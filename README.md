@@ -1,5 +1,18 @@
 # loggify
 
+[![conduct-badge][]][conduct]
+[![release-badge][]][crate]
+[![docs-badge][]][docs]
+[![license-badge][]](#license)
+
+[conduct-badge]: https://img.shields.io/badge/%E2%9D%A4-code%20of%20conduct-blue.svg?style=flat-square
+[license-badge]: https://img.shields.io/badge/license-MIT-blue?style=flat-square
+[release-badge]: https://img.shields.io/crates/v/loggify.svg?style=flat-square
+[docs-badge]: https://img.shields.io/badge/docs-latest-blue.svg?style=flat-square
+[conduct]: https://github.com/lholznagel/loggify/blob/master/CODE_OF_CONDUCT.md
+[crate]: https://crates.io/crates/loggify
+[docs]: https://docs.rs/loggify
+
 A small and simple log implementation that I use in my rust projects.
 
 ## Install
@@ -8,8 +21,8 @@ Just add
 
 ``` toml
 [dependencies]
-log = "0.4.6"
-loggify = "1.0.0"
+log = "0.4.8"
+loggify = "1.1.0"
 ```
 
 to your `Cargo.toml`
