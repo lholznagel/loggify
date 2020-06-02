@@ -5,8 +5,7 @@
     unsafe_code,
     unstable_features,
     unused_import_braces,
-    unused_qualifications,
-    warnings
+    unused_qualifications
 )]
 
 //!## Usage
