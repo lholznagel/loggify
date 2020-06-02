@@ -22,7 +22,7 @@ Just add
 ``` toml
 [dependencies]
 log = "0.4.8"
-loggify = "1.2.0"
+loggify = "1.3.0"
 ```
 
 to your `Cargo.toml`
