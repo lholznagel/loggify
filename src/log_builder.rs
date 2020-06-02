@@ -8,7 +8,8 @@ pub struct LogBuilder {
     exclude: Vec<String>,
     level: Level,
     time_format: String,
-    log_target: bool
+    log_target: bool,
+    color: bool
 }
 
 impl LogBuilder {
@@ -48,7 +49,8 @@ impl LogBuilder {
             level: Level::Info,
             exclude: Vec::new(),
             time_format: String::from("%d.%m.%Y %H:%M:%S"),
-            log_target: false
+            log_target: false,
+            color: true
         }
     }
 
@@ -81,13 +83,21 @@ impl LogBuilder {
         self
     }
 
+    /// Disables color output
+    /// Per default `true`
+    pub fn disable_color(mut self) -> Self {
+        self.color = false;
+        self
+    }
+
     /// Creates a new logger
     pub fn build(self) -> Result<(), SetLoggerError> {
         let logger = Loggify { 
             level: self.level, 
             exclude: self.exclude,
             time_format: self.time_format,
-            log_target: self.log_target
+            log_target: self.log_target,
+            color: self.color
         };
         log::set_boxed_logger(Box::new(logger))?;
         log::set_max_level(self.level.to_level_filter());

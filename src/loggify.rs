@@ -16,7 +16,10 @@ pub struct Loggify {
     pub(crate) time_format: String,
     /// defines if the target should be logged or not
     /// this option should be used as a debug option
-    pub(crate) log_target: bool
+    pub(crate) log_target: bool,
+    /// determines if the output is colored or not
+    /// per default `true`
+    pub(crate) color: bool
 }
 
 impl Loggify {
@@ -96,20 +99,42 @@ impl Log for Loggify {
            return;
         }
 
-        let mut chalk = Chalk::new();
-        let level_msg = match record.level() {
-            Level::Error => chalk.red().bold().string(&"Error"),
-            Level::Warn  => chalk.yellow().bold().string(&"Warn "),
-            Level::Info  => chalk.cyan().bold().string(&"Info "),
-            Level::Debug => chalk.magenta().bold().string(&"Debug"),
-            Level::Trace => chalk.blue().bold().string(&"Trace"),
+        let level_msg = if self.color {
+            match record.level() {
+                Level::Error => Chalk::new().red().bold().string(&"Error"),
+                Level::Warn  => Chalk::new().yellow().bold().string(&"Warn "),
+                Level::Info  => Chalk::new().cyan().bold().string(&"Info "),
+                Level::Debug => Chalk::new().magenta().bold().string(&"Debug"),
+                Level::Trace => Chalk::new().blue().bold().string(&"Trace"),
+            }
+        } else {
+            match record.level() {
+                Level::Error => "Error".into(),
+                Level::Warn  => "Warn ".into(),
+                Level::Info  => "Info ".into(),
+                Level::Debug => "Debug".into(),
+                Level::Trace => "Trace".into(),
+            }
+        };
+
+        let time = if self.color {
+            Chalk::new().grey().string(&Utc::now().format(&self.time_format))
+        } else {
+            Utc::now().format(&self.time_format).to_string()
+        };
+
+        let msg = if self.color {
+            Chalk::new().white().bold().string(&record.args())
+        } else {
+            record.args().to_string()
         };
 
         println!(
             "[{}] > {} > {}",
-            Chalk::new().grey().string(&Utc::now().format(&self.time_format)),
+            time,
             level_msg,
-            Chalk::new().white().bold().string(&record.args()));
+            msg
+        );
     }
 
     fn flush(&self) {
