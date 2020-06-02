@@ -1,5 +1,6 @@
 use crate::LogBuilder;
 
+use chalk_rs::Chalk;
 use chrono::Utc;
 use log::{Log, Level, Metadata, Record, SetLoggerError};
 
@@ -83,6 +84,7 @@ impl Log for Loggify {
         for value in self.exclude.clone() {
             if metadata.target().contains(&value) {
                 result = false;
+                break;
             }
         }
 
@@ -94,19 +96,20 @@ impl Log for Loggify {
            return;
         }
 
-        let level_msg: &str = match record.level() {
-            Level::Error => "\x1B[0;31mError \x1B",
-            Level::Warn  => "\x1B[0;93mWarn  \x1B",
-            Level::Info  => "\x1B[0;34mInfo  \x1B",
-            Level::Debug => "\x1B[0;35mDebug \x1B",
-            Level::Trace => "\x1B[0;36mTrace \x1B",
+        let mut chalk = Chalk::new();
+        let level_msg = match record.level() {
+            Level::Error => chalk.red().bold().string(&"Error"),
+            Level::Warn  => chalk.yellow().bold().string(&"Warn "),
+            Level::Info  => chalk.cyan().bold().string(&"Info "),
+            Level::Debug => chalk.magenta().bold().string(&"Debug"),
+            Level::Trace => chalk.blue().bold().string(&"Trace"),
         };
 
         println!(
-            "\x1B[1;30m[{}] > \x1B {}[1;30m>\x1B[0m {}",
-            Utc::now().format(&self.time_format),
+            "[{}] > {} > {}",
+            Chalk::new().grey().string(&Utc::now().format(&self.time_format)),
             level_msg,
-            record.args());
+            Chalk::new().white().bold().string(&record.args()));
     }
 
     fn flush(&self) {
