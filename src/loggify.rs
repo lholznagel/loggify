@@ -48,7 +48,7 @@ impl Loggify {
     /// }
     /// ```
     pub fn init() -> Result<(), SetLoggerError> {
-        LogBuilder::new().build()
+        LogBuilder::default().build()
     }
 
     /// Same as `init` but with log level

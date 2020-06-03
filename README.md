@@ -22,7 +22,7 @@ Just add
 ``` toml
 [dependencies]
 log = "0.4.8"
-loggify = "1.3.0"
+loggify = "1"
 ```
 
 to your `Cargo.toml`
@@ -100,7 +100,15 @@ fn main() {
 }
 ```
 
-### Disabled color
+### Disable color output
+You can either programmatically disable color output or use the env `LOGGIFY_COLOR` variable.
+To disable it using the env variable use `LOGGIFY_COLOR=false`.
+
+
+If the value of the env variable cannot be parsed as a boolean value, the logger silently defaults to a colored output.
+
+See the code example for programmatically disabling colored output.
+
 ``` rust
 //! examples/05_builder.rs
 //! Example for initializing the logger with the LogBuilder

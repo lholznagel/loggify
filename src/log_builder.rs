@@ -45,13 +45,7 @@ impl LogBuilder {
     /// }
     /// ```
     pub fn new() -> Self {
-        Self {
-            level: Level::Info,
-            exclude: Vec::new(),
-            time_format: String::from("%d.%m.%Y %H:%M:%S"),
-            log_target: false,
-            color: true
-        }
+        Self::default()
     }
 
     /// Adds a new target to exclude from logging
@@ -102,5 +96,19 @@ impl LogBuilder {
         log::set_boxed_logger(Box::new(logger))?;
         log::set_max_level(self.level.to_level_filter());
         Ok(())
+    }
+}
+
+impl Default for LogBuilder {
+    fn default() -> Self {
+        Self {
+            level: Level::Info,
+            exclude: Vec::new(),
+            time_format: String::from("%d.%m.%Y %H:%M:%S"),
+            log_target: false,
+            color: std::env::var("LOGGIFY_COLOR")
+                .map(|x| x.parse().unwrap_or(true))
+                .unwrap_or(true)
+        }
     }
 }
